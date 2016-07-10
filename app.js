@@ -17,7 +17,7 @@ $(document).ready(function () {
 
   $.ajax({
     type: 'GET',
-    url: 'http://eonet.sci.gsfc.nasa.gov/api/v2.1/categories',
+    url: 'https://eonet.sci.gsfc.nasa.gov/api/v2.1/categories?api_key=e0xaFTehVbUGmZjo2H94BthXsxaR8YYemqp9imxM',
     dataType: 'json'
   }).done(function (data) {
     data.categories.forEach(function (datum) {
@@ -73,7 +73,7 @@ $(document).ready(function () {
 
   $.ajax({
     type: 'GET',
-    url: 'http://eonet.sci.gsfc.nasa.gov/api/v2.1/events',
+    url: 'https://eonet.sci.gsfc.nasa.gov/api/v2.1/events?api_key=e0xaFTehVbUGmZjo2H94BthXsxaR8YYemqp9imxM',
     dataType: 'json'
   }).done(function (data) {
     data.events.forEach(function (datum) {
