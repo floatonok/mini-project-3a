@@ -15,28 +15,59 @@ $(document).ready(function () {
   // var eventColor = {id: null, color: null}
   var markerColor
 
-  function invertColor (hexTripletColor) {
-    var color = hexTripletColor
-    color = color.substring(1)           // remove #
-    color = parseInt(color, 16)          // convert to integer
-    color = 0xFFFFFF ^ color             // invert three bytes
-    color = color.toString(16)           // convert to hex
-    color = ('000000' + color).slice(-6) // pad with leading zeros
-    color = '#' + color                  // prepend #
-    return color
-  }
-
   $.ajax({
     type: 'GET',
     url: 'http://eonet.sci.gsfc.nasa.gov/api/v2.1/categories',
     dataType: 'json'
   }).done(function (data) {
     data.categories.forEach(function (datum) {
-      allColors.push({id: datum.id, title: datum.title, color: '#' + Math.floor(Math.random() * 16777215).toString(16)})
+      // allColors.push({id: datum.id, title: datum.title, color: '#' + Math.floor(Math.random() * 16777215).toString(16)})
+      switch (datum.id) {
+        case 6:
+          allColors.push({id: datum.id, title: datum.title, color: '#348899'})
+          break
+        case 7:
+          allColors.push({id: datum.id, title: datum.title, color: '#962D3E'})
+          break
+        case 16:
+          allColors.push({id: datum.id, title: datum.title, color: '#261722'})
+          break
+        case 9:
+          allColors.push({id: datum.id, title: datum.title, color: '#76A68F'})
+          break
+        case 14:
+          allColors.push({id: datum.id, title: datum.title, color: '#325943'})
+          break
+        case 19:
+          allColors.push({id: datum.id, title: datum.title, color: '#D99C52'})
+          break
+        case 15:
+          allColors.push({id: datum.id, title: datum.title, color: '#979C9C'})
+          break
+        case 10:
+          allColors.push({id: datum.id, title: datum.title, color: '#E54661'})
+          break
+        case 17:
+          allColors.push({id: datum.id, title: datum.title, color: '#553285'})
+          break
+        case 18:
+          allColors.push({id: datum.id, title: datum.title, color: '#998A2F'})
+          break
+        case 12:
+          allColors.push({id: datum.id, title: datum.title, color: '#35478C'})
+          break
+        case 13:
+          allColors.push({id: datum.id, title: datum.title, color: '#002D40'})
+          break
+        case 8:
+          allColors.push({id: datum.id, title: datum.title, color: '#FF7F66'})
+          break
+      }
+      console.log(allColors)
     })
     allColors.forEach(function (col) {
-      var complement = invertColor(col.color)
-      $('#list').append('<li>' + '<div style="background-color:' + col.color + '; color:' + complement + '; width: 100px; height: 35px;">' + col.title + '</div>' + '</li>')
+      // var complement = invertColor(col.color)
+      $('#list').append('<li>' + '<div style="background-color:' + col.color + '; width: 105px; height: 35px;">' + col.title + '</div>' + '</li>')
     })
   })
 
@@ -58,7 +89,7 @@ $(document).ready(function () {
           pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, {
               radius: 15,
-              color: 'markerColor',
+              color: markerColor,
               weight: 1,
               opacity: 1,
               fillOpacity: 0.4,
@@ -70,8 +101,9 @@ $(document).ready(function () {
         circle = L.geoJson(geometry, {
           style: {
             'color': markerColor,
-            'weight': 4,
-            'opacity': 0.4
+            'weight': 2,
+            'opacity': 1,
+            fillOpacity: 0.4
           }
         }).addTo(mymap)
       }
