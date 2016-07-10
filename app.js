@@ -1,7 +1,7 @@
 /* globals L $ */
 $(document).ready(function () {
   // DRAWING THE MAP
-  var mymap = L.map('mapid').setView([0, 0], 3)
+  var mymap = L.map('mapid').setView([0, 0], 2)
 
   L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -14,7 +14,7 @@ $(document).ready(function () {
   //   accessToken: 'pk.eyJ1IjoiZmxvYXRvbm9rIiwiYSI6ImNpcWM2eml6bDAxb3Vmcm0xdnQ0ZzBoazMifQ.e712oBJUID9CAIrO1PmPbw'
   // }).addTo(mymap)
 
-// ------------- GEOMETRY TYPE: POLYGON -------------
+  // ------------- GEOMETRY TYPE: POLYGON -------------
   // var states = [{
   //   'type': 'Feature',
   //   'properties': {'party': 'Republican'},
@@ -39,7 +39,15 @@ $(document).ready(function () {
   //   }
   // }).addTo(mymap)
 
-// ------------- GEOMETRY TYPE: POINT -------------
+  // ------------- GEOMETRY TYPE: POINT -------------
+  var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: '#ff7800',
+    color: '#000',
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
   // var states2 = [{
   //   'type': 'Feature',
   //   'geometry': {
@@ -49,36 +57,13 @@ $(document).ready(function () {
   //   }
   // }]
 
-  var geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: '#ff7800',
-    color: '#000',
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-  }
-
   // L.geoJson(states2, {
   //   pointToLayer: function (feature, latlng) {
   //     return L.circleMarker(latlng, geojsonMarkerOptions)
   //   }
   // }).addTo(mymap)
 
-// ------------- AJAX REQUEST -------------
-  // $.ajax({
-  //   type: 'GET',
-  //   url: 'http://eonet.sci.gsfc.nasa.gov/api/v2.1/events',
-  //   dataType: 'json',
-  //   success: function (response) {
-  //     response.forEach(function (datum) {
-  //       L.geoJson(datum.events[0].geometries, {
-  //         pointToLayer: function (feature, latlng) {
-  //           return L.circleMarker(latlng, geojsonMarkerOptions)
-  //         }
-  //       }).addTo(mymap)
-  //     })
-  //   }
-  // })
+  // ------------- AJAX REQUEST -------------
 
   $.ajax({
     type: 'GET',
@@ -86,26 +71,17 @@ $(document).ready(function () {
     dataType: 'json'
   }).done(function (data) {
     data.events.forEach(function (datum) {
-      L.geoJson(datum.geometries, {
+      var geometry = datum.geometries
+      var circle = L.geoJson(geometry, {
         pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, geojsonMarkerOptions)
         }
       }).addTo(mymap)
+      var date = geometry[0].date
+      circle.bindPopup(datum.title + '<br>' + new Date(date).toDateString())
+      // circle.onclick = function () {
+      //   $('#date').append('THE DATE GOES HERE!')
+      // }
     })
   })
-
-//   var district_boundary = new L.geoJson()
-//   district_boundary.addTo(mymap)
-//
-//   $.ajax({
-//     dataType: 'json',
-//     url: 'http://eonet.sci.gsfc.nasa.gov/api/v2.1/events',
-//     success: function (data) {
-//       // console.log(data.events[0].geometries[0].coordinates)
-//       $(data.features).each(function (key, data) {
-//         console.log(data.features)
-//         district_boundary.addData(data)
-//       })
-//     }
-//   }).error(function () {})
 })
