@@ -1,3 +1,23 @@
-#mapid {
-  height: 780px;
+ul, li {
+  text-decoration: none;
+  list-style: none;
+  list-style-type: none;
+  display: inline-flex;
 }
+
+li {
+  font-size: 12px;
+}
+
+#mapid {
+  height: 680px;
+}
+
+#list {
+  text-align: center;
+}
+
+/*#legend {
+  position: fixed;
+  bottom: 20%;
+}*/
